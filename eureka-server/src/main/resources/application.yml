@@ -1,0 +1,36 @@
+eureka:
+    client:
+        fetch-registry: false
+        register-with-eureka: false
+        serviceUrl:
+            defaultZone: http://localhost:9091/eureka/
+server:
+    port: 9091
+spring:
+    application:
+        name: eureka
+
+
+
+
+
+#eureka:
+#    client:
+#        fetch-registry: false
+#        register-with-eureka: false
+#logging:
+#    level:
+#        com:
+#            netflix:
+#                discovery: 'OFF'
+#                eureka: 'OFF'
+#management:
+#    endpoints:
+#        web:
+#            exposure:
+#                include: '*'
+##server:
+##    port: 8882
+#spring:
+#    application:
+#        name: eureka

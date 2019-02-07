@@ -1,0 +1,185 @@
+version: "3"
+services:
+  mongo:
+    image: mongo
+    ports:
+      - "27017:27017"
+    container_name: mongo
+    network_mode: host
+
+  eureka-server:
+#    image: eurekaservice-app
+    build: eureka-server/
+    restart: always
+    network_mode: host
+    container_name: eureka-service-docker
+    ports:
+      - "9091:9091"
+    expose:
+      - 9091
+
+  config-server:
+#    image: config:latest
+    build: config-server/
+    ports:
+      - "8661:8661"
+    container_name: config-docker
+    network_mode: host
+    depends_on:
+      - mongo
+      - eureka-server
+    expose:
+      - 8661
+
+  zuul-service:
+#    image: zuul:latest
+    build: Zuul/
+    ports:
+      - "8087:8087"
+    container_name: zuul-docker
+    network_mode: host
+    depends_on:
+      - mongo
+    expose:
+      - 8087
+
+
+  muzix-track:
+    build: MuzixTrack/
+    ports:
+      - "8093:8093"
+    container_name: track-docker
+    network_mode: host
+    depends_on:
+      - mongo
+      - eureka-server
+      - config-server
+      - zuul-service
+    expose:
+      - 8093
+
+  muzix-user:
+#    image: user:latest
+    build: MuzixUser/
+    ports:
+      - "8193:8193"
+    container_name: user-docker
+    network_mode: host
+    depends_on:
+      - mongo
+      - eureka-server
+      - config-server
+      - zuul-service
+    expose:
+      - 8193
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+##version : "3"
+##
+##services:
+##  mongo:
+##    image: mongo
+##    ports:
+##      - "27017:27017"
+##    container_name: mongo
+##   network_mode: host
+##
+##
+##    config-server:
+##    image: configservice-app:latest
+##    build: config-server/
+##    restart: always
+##    network_mode: host
+##    depends_on:
+##      - mongo
+##      - eureka-server
+##    ports:
+##      - "8661:8661"
+##    expose:
+##      - 8082
+##      - eureka-spring:
+##    image: eureka-service-app
+##    build: eureka-service/
+##    restart: always
+##    network_mode: host
+##    #    container_name: spring-docker
+##    depends_on:
+##      - mongo
+##    ports:
+##      - "8184:8184"
+##    expose:
+##      - 8184  track-spring:
+##    image: track-service-app
+##    build: MuzixTrack/
+##    restart: always
+##    network_mode: host
+##    #    container_name: spring-docker
+##    depends_on:
+##      - mongo
+##      - config-spring
+##      - eureka-spring
+##      - zuul-spring
+##    ports:
+##      - "8181:8181"
+##    expose:
+##      - 8181
+##      - user-spring:
+##    image: userservice-app
+##    build: user-service/
+##    restart: always
+##    network_mode: host
+##    #    container_name: spring-docker
+##    depends_on:
+##      - mongo
+##      - config-spring
+##      - eureka-spring
+##      - zuul-spring
+##    ports:
+##      - "8184:8184"
+##    expose:
+##      - 8184  zuul-spring:
+##    image: zuul-service-app
+##    build: Zuul/
+##    restart: always
+##    network_mode: host
+##    #    container_name: spring-docker
+##    depends_on:
+##      - mongo
+##    ports:
+##      - "8185:8185"
+##    expose:
+##      - 8082
+##  Message Input
